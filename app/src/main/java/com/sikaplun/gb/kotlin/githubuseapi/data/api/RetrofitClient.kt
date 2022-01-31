@@ -1,4 +1,4 @@
-package com.sikaplun.gb.kotlin.githubuseapi.api
+package com.sikaplun.gb.kotlin.githubuseapi.data.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

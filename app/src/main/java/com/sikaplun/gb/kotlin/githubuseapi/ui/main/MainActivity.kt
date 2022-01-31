@@ -1,13 +1,16 @@
 package com.sikaplun.gb.kotlin.githubuseapi.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sikaplun.gb.kotlin.githubuseapi.adapter.GitHubUserAdapter
+import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
+import com.sikaplun.gb.kotlin.githubuseapi.ui.adapter.GitHubUserAdapter
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ActivityMainBinding
+import com.sikaplun.gb.kotlin.githubuseapi.ui.detail.DetailUserActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,13 +31,12 @@ class MainActivity : AppCompatActivity() {
         initQueryEditText()
 
 
-        viewModel.getSearchUsers().observe(this, {
-            if (it !== null) {
-                adapter.setList(it)
+        viewModel.getSearchUsers().observe(this, { listUsers ->
+            if (listUsers !== null) {
+                adapter.setList(listUsers)
                 showLoading(false)
             }
         })
-
     }
 
     private fun initViewModel() {
@@ -47,6 +49,17 @@ class MainActivity : AppCompatActivity() {
     private fun initAdapter() {
         adapter = GitHubUserAdapter()
         adapter.notifyDataSetChanged()
+
+        adapter.setOnItemClickCallback(object : GitHubUserAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: User) {
+                Intent(this@MainActivity, DetailUserActivity::class.java).also {
+                    it.putExtra(DetailUserActivity.EXTRA_USERNAME, data.login)
+                    startActivity(it)
+                }
+            }
+
+        })
+
     }
 
     private fun initQueryEditText() {

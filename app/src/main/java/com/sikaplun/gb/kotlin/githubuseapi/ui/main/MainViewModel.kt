@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sikaplun.gb.kotlin.githubuseapi.api.RetrofitClient
+import com.sikaplun.gb.kotlin.githubuseapi.data.api.RetrofitClient
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.UserResponse
 import retrofit2.Call

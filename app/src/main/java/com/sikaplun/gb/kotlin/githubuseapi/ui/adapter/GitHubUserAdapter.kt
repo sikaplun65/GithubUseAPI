@@ -1,5 +1,6 @@
 package com.sikaplun.gb.kotlin.githubuseapi.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ class GitHubUserAdapter : RecyclerView.Adapter<UserViewHolder>() {
         this.onItemClickCallback = onItemClickCallback
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(users: ArrayList<User>) {
         list.clear()
         list.addAll(users)

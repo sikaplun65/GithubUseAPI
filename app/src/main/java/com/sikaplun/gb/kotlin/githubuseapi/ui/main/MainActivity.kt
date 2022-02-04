@@ -1,22 +1,29 @@
 package com.sikaplun.gb.kotlin.githubuseapi.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
-import com.sikaplun.gb.kotlin.githubuseapi.ui.adapter.GitHubUserAdapter
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ActivityMainBinding
+import com.sikaplun.gb.kotlin.githubuseapi.ui.adapter.GitHubUserAdapter
 import com.sikaplun.gb.kotlin.githubuseapi.ui.detail.DetailUserActivity
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     private lateinit var adapter: GitHubUserAdapter
+
+    private lateinit var disposable: Disposable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,27 +32,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initAdapter()
-        initViewModel()
         initRecyclerView()
         initSearchButton()
         initQueryEditText()
 
-
-        viewModel.getSearchUsers().observe(this, { listUsers ->
-            if (listUsers !== null) {
-                adapter.setList(listUsers)
+        disposable = viewModel.getSearchUsers.subscribeBy(
+            onNext = {
+                adapter.setList(it)
                 showLoading(false)
-            }
-        })
+            },
+            onError = { it.printStackTrace() },
+            onComplete = { Log.i("Complete", "onCompleted: COMPLETED!") }
+        )
+
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        ).get(MainViewModel::class.java)
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     private fun initAdapter() {
         adapter = GitHubUserAdapter()
         adapter.notifyDataSetChanged()
@@ -103,6 +105,13 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        if (!disposable.isDisposed) {
+            disposable.dispose()
+        }
+        super.onDestroy()
     }
 
 }

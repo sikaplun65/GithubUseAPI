@@ -1,40 +1,30 @@
 package com.sikaplun.gb.kotlin.githubuseapi.ui.main
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sikaplun.gb.kotlin.githubuseapi.data.api.RetrofitClient
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
-import com.sikaplun.gb.kotlin.githubuseapi.data.model.UserResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class MainViewModel : ViewModel() {
-    val listUsers = MutableLiveData<ArrayList<User>>()
+
+    private val listUsers = BehaviorSubject.create<ArrayList<User>>()
 
     fun setSearchUsers(query: String) {
-        RetrofitClient.apiInstance
-            .getSearchUsers(query)
-            .enqueue(object : Callback<UserResponse> {
-                override fun onResponse(
-                    call: Call<UserResponse>,
-                    response: Response<UserResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        listUsers.postValue(response.body()?.items)
-                    }
-                }
-
-                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                    Log.d("Failure", t.message.toString())
-                }
-
+        RetrofitClient.apiInstance.getSearchUsers(query)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                listUsers.onNext(response.items)
+            }, { throwable ->
+                Log.d("Failure", throwable.message.toString())
             })
     }
 
-    fun getSearchUsers(): LiveData<ArrayList<User>> {
-        return listUsers
-    }
+    val getSearchUsers: Observable<ArrayList<User>>
+        get() = listUsers
+
 }

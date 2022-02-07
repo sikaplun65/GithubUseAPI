@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/repo_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:layout_marginTop="12dp"
+    android:padding="8dp">
+
+        <TextView
+            android:id="@+id/repo_name_text_view"
+            android:textStyle="bold"
+            android:textColor="@color/green"
+            android:text="repo_name_text_view"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/repo_description_text_view"
+            android:textColor="@color/dark_red"
+            android:text="repo_description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/repo_language_text_view"
+            android:textStyle="italic"
+            android:textColor="@color/purple_700"
+            android:text="repo_description_text_view"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</LinearLayout>

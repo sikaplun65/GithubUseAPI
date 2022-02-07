@@ -23,6 +23,7 @@
         android:layout_marginStart="16dp"
         tools:text="TextView"
         android:textSize="16sp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/user_image_view"
         app:layout_constraintStart_toEndOf="@+id/user_image_view"
         app:layout_constraintTop_toTopOf="@+id/user_image_view" />

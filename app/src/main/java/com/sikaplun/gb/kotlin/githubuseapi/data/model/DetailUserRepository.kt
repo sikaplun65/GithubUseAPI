@@ -2,7 +2,7 @@ package com.sikaplun.gb.kotlin.githubuseapi.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class UserRepository(
+data class DetailUserRepository(
     @SerializedName("name")
     val name: String,
 

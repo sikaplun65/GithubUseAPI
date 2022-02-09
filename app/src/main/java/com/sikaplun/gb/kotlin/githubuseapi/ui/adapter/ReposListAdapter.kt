@@ -3,14 +3,14 @@ package com.sikaplun.gb.kotlin.githubuseapi.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sikaplun.gb.kotlin.githubuseapi.data.model.UserRepository
+import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserRepository
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ListItemRepoBinding
 
 class ReposListAdapter : RecyclerView.Adapter<ReposListAdapter.ReposViewHolder>() {
 
-    private val reposList = ArrayList<UserRepository>()
+    private val reposList = ArrayList<DetailUserRepository>()
 
-    fun setReposList(repos: ArrayList<UserRepository>) {
+    fun setReposList(repos: ArrayList<DetailUserRepository>) {
         reposList.clear()
         reposList.addAll(repos)
         notifyDataSetChanged()
@@ -30,7 +30,7 @@ class ReposListAdapter : RecyclerView.Adapter<ReposListAdapter.ReposViewHolder>(
 
     inner class ReposViewHolder(private val binding: ListItemRepoBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(repo: UserRepository) {
+        fun bind(repo: DetailUserRepository) {
             binding.apply {
                 repoNameTextView.text = repo.name
                 repoDescriptionTextView.text = repo.description

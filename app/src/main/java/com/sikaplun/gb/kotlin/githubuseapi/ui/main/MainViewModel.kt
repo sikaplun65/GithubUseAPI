@@ -1,30 +1,39 @@
 package com.sikaplun.gb.kotlin.githubuseapi.ui.main
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sikaplun.gb.kotlin.githubuseapi.data.api.RetrofitClient
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import com.sikaplun.gb.kotlin.githubuseapi.data.repositories.GitRepositoryRequest
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.kotlin.subscribeBy
 
-class MainViewModel : ViewModel() {
+class MainViewModel: ViewModel(){
+    private val listUsers = MutableLiveData<ArrayList<User>>()
+    private val repos by lazy { GitRepositoryRequest() }
 
-    private val listUsers = BehaviorSubject.create<ArrayList<User>>()
+    private lateinit var disposable: Disposable
 
-    fun setSearchUsers(query: String) {
-        RetrofitClient.apiInstance.getSearchUsers(query)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                listUsers.onNext(response.items)
-            }, { throwable ->
-                Log.d("Failure", throwable.message.toString())
-            })
+    fun findUsers(query: String){
+        repos.findUsers(query)
     }
 
-    val getSearchUsers: Observable<ArrayList<User>>
-        get() = listUsers
+    fun getFoundUsers(): LiveData<ArrayList<User>> {
+        disposable = repos.getSearchUsers().subscribeBy(
+            onNext = {
+                listUsers.postValue(it)
+            },
+            onError = { it.printStackTrace() },
+            onComplete = { Log.i("Complete", "onCompleted: COMPLETED!") }
+        )
+        return listUsers
+    }
 
+    override fun onCleared() {
+        if (disposable.isDisposed){
+            disposable.dispose()
+        }
+        super.onCleared()
+    }
 }

@@ -3,7 +3,6 @@ package com.sikaplun.gb.kotlin.githubuseapi.ui.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +12,6 @@ import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ActivityMainBinding
 import com.sikaplun.gb.kotlin.githubuseapi.ui.adapter.GitHubUserAdapter
 import com.sikaplun.gb.kotlin.githubuseapi.ui.detail.DetailUserActivity
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.kotlin.subscribeBy
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,8 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     private lateinit var adapter: GitHubUserAdapter
-
-    private lateinit var disposable: Disposable
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,16 +30,17 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
         initSearchButton()
         initQueryEditText()
+        showFoundUsers()
 
-        disposable = viewModel.getSearchUsers.subscribeBy(
-            onNext = {
+    }
+
+    private fun showFoundUsers() {
+        viewModel.getFoundUsers().observe(this) {
+            if (it != null) {
                 adapter.setList(it)
                 showLoading(false)
-            },
-            onError = { it.printStackTrace() },
-            onComplete = { Log.i("Complete", "onCompleted: COMPLETED!") }
-        )
-
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -95,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             showLoading(true)
-            viewModel.setSearchUsers(query)
+            viewModel.findUsers(query)
         }
     }
 
@@ -105,13 +101,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
-    }
-
-    override fun onDestroy() {
-        if (!disposable.isDisposed) {
-            disposable.dispose()
-        }
-        super.onDestroy()
     }
 
 }

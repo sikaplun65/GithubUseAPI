@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserRepository
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ListItemRepoBinding
+import javax.inject.Inject
 
-class ReposListAdapter : RecyclerView.Adapter<ReposListAdapter.ReposViewHolder>() {
+class ReposListAdapter: RecyclerView.Adapter<ReposListAdapter.ReposViewHolder>() {
 
     private val reposList = ArrayList<DetailUserRepository>()
 

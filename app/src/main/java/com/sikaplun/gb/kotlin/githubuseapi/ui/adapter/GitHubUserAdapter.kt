@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ItemUserBinding
+import javax.inject.Inject
 
 class GitHubUserAdapter : RecyclerView.Adapter<UserViewHolder>() {
 

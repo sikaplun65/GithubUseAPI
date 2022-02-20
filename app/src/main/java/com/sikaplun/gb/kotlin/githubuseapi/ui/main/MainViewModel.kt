@@ -9,10 +9,10 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class MainViewModel(
-    private val repos: GitRepositoryRequest,
-    private val listUsers: MutableLiveData<ArrayList<User>>,
+    private val repos: GitRepositoryRequest
 ) : ViewModel() {
 
+    private val listUsers by lazy { MutableLiveData<ArrayList<User>>()}
     private lateinit var disposable: Disposable
 
     fun findUsers(query: String) {
@@ -31,7 +31,7 @@ class MainViewModel(
     }
 
     override fun onCleared() {
-        if (disposable.isDisposed){
+        if (!disposable.isDisposed){
             disposable.dispose()
         }
         super.onCleared()

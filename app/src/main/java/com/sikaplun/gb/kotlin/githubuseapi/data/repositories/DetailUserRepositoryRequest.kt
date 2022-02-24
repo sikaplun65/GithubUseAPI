@@ -1,23 +1,22 @@
 package com.sikaplun.gb.kotlin.githubuseapi.data.repositories
 
 import android.util.Log
+import com.sikaplun.gb.kotlin.githubuseapi.data.api.ApiGitHub
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserRepository
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserResponse
-import com.sikaplun.gb.kotlin.githubuseapi.di.module.RetrofitModule
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
 
-class DetailUserRepositoryRequest @Inject constructor(private val retrofit: RetrofitModule) {
+class DetailUserRepositoryRequest(private val apiGitHub: ApiGitHub) {
 
     private val user = BehaviorSubject.create<DetailUserResponse>()
     private val repos = BehaviorSubject.create<ArrayList<DetailUserRepository>>()
 
     fun findUserDetail(username: String) {
-        retrofit.provideApiInstance().getUserDetailRF(username)
+        apiGitHub.getUserDetailRF(username)
             .enqueue(object : Callback<DetailUserResponse> {
                 override fun onResponse(
                     call: Call<DetailUserResponse>,
@@ -36,7 +35,7 @@ class DetailUserRepositoryRequest @Inject constructor(private val retrofit: Retr
     }
 
     fun findUserRepos(username: String){
-        retrofit.provideApiInstance().getRepoRF(username)
+        apiGitHub.getRepoRF(username)
             .enqueue(object : Callback<ArrayList<DetailUserRepository>> {
                 override fun onResponse(
                     call: Call<ArrayList<DetailUserRepository>>,

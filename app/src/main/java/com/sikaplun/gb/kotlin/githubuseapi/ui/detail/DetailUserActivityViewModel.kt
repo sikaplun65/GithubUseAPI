@@ -10,7 +10,7 @@ import com.sikaplun.gb.kotlin.githubuseapi.data.repositories.DetailUserRepositor
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
-class DetailUserActivityModel(
+class DetailUserActivityViewModel(
     private val userDetail: DetailUserRepositoryRequest
 ) : ViewModel() {
 

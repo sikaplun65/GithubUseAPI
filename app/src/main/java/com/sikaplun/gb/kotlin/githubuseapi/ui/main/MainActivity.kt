@@ -17,9 +17,12 @@ import com.sikaplun.gb.kotlin.githubuseapi.ui.detail.DetailUserActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+    private val viewModel by lazy {
+        ViewModelProvider(this, MainViewModelFactory()).get(
+            MainViewModel::class.java
+        )
+    }
     private lateinit var adapter: GitHubUserAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

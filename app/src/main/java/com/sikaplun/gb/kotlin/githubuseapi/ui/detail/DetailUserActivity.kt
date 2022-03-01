@@ -2,22 +2,24 @@ package com.sikaplun.gb.kotlin.githubuseapi.ui.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserResponse
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ActivityDetailUserBinding
 import com.sikaplun.gb.kotlin.githubuseapi.ui.adapter.ReposListAdapter
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class DetailUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailUserBinding
 
-    private val viewModel by lazy { ViewModelProvider(this).get(DetailUserActivityModel::class.java) }
+    private val viewModel by lazy {
+        ViewModelProvider(this, DetailUserActivityModelFactory()).get(
+            DetailUserActivityModel::class.java
+        )
+    }
     private lateinit var reposAdapter: ReposListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,16 +53,21 @@ class DetailUserActivity : AppCompatActivity() {
                 binding.apply {
                     nameTextView.text = detailedResponseAboutUser.name
                     userNameTextView.text = detailedResponseAboutUser.login
+                    showAvatarImage(detailedResponseAboutUser)
 
-                    Glide.with(this@DetailUserActivity)
-                        .load(detailedResponseAboutUser.avatarUrl)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .centerCrop()
-                        .into(profileImageView)
                 }
             }
         }
     }
+
+    private fun showAvatarImage(detailedResponseAboutUser: DetailUserResponse) {
+        Glide.with(this@DetailUserActivity)
+            .load(detailedResponseAboutUser.avatarUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .centerCrop()
+            .into(binding.profileImageView)
+    }
+
 
     private fun initReposRecyclerView() {
         binding.apply {

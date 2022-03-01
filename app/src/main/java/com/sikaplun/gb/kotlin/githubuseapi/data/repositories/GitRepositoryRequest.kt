@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GitRepositoryRequest {
+class GitRepositoryRequest{
     private val listUsers = BehaviorSubject.create<ArrayList<User>>()
 
     fun findUsers(query: String) {

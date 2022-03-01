@@ -1,26 +1,22 @@
 package com.sikaplun.gb.kotlin.githubuseapi.app
 
 import android.app.Application
-import android.content.Context
-import com.sikaplun.gb.kotlin.githubuseapi.di.component.AppComponent
-import com.sikaplun.gb.kotlin.githubuseapi.di.component.DaggerAppComponent
-import com.sikaplun.gb.kotlin.githubuseapi.di.module.RetrofitModule
+import com.sikaplun.gb.kotlin.githubuseapi.di.module.appModule
+import com.sikaplun.gb.kotlin.githubuseapi.di.module.dataModule
+import com.sikaplun.gb.kotlin.githubuseapi.di.module.retrofitModule
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 
 
 class App : Application() {
 
-    lateinit var appComponent: AppComponent
-
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent
-            .factory()
-            .create(RetrofitModule)
+
+        startKoin {
+            androidLogger(level = Level.DEBUG)
+            modules(listOf(appModule, dataModule, retrofitModule))
+        }
     }
 }
-
-val Context.appComponent: AppComponent
-    get() = when (this) {
-        is App -> appComponent
-        else -> this.applicationContext.appComponent
-    }

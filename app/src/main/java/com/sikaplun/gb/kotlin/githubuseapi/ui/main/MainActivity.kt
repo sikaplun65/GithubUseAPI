@@ -5,26 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sikaplun.gb.kotlin.githubuseapi.app.App
-import com.sikaplun.gb.kotlin.githubuseapi.app.appComponent
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.User
 import com.sikaplun.gb.kotlin.githubuseapi.databinding.ActivityMainBinding
 import com.sikaplun.gb.kotlin.githubuseapi.ui.adapter.GitHubUserAdapter
 import com.sikaplun.gb.kotlin.githubuseapi.ui.detail.DetailUserActivity
-import javax.inject.Inject
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    @Inject
-    lateinit var viewModelFactory: MainViewModelFactory
-
-    private val viewModel: MainViewModel by viewModels { viewModelFactory }
+    private val viewModel: MainViewModel by viewModel()
 
     private lateinit var adapter: GitHubUserAdapter
 
@@ -32,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        appComponent.inject(this)
-
 
         initAdapter()
         initRecyclerView()

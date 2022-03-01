@@ -11,10 +11,11 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 
 class DetailUserActivityModel(
-    private val user: MutableLiveData<DetailUserResponse>,
-    private val repos: MutableLiveData<ArrayList<DetailUserRepository>>,
     private val userDetail: DetailUserRepositoryRequest
 ) : ViewModel() {
+
+    private val user = MutableLiveData<DetailUserResponse>()
+    private val repos = MutableLiveData<ArrayList<DetailUserRepository>>()
 
     private var compositeDisposable = CompositeDisposable()
 
@@ -47,7 +48,7 @@ class DetailUserActivityModel(
     }
 
     override fun onCleared() {
-        if (compositeDisposable.isDisposed){
+        if (!compositeDisposable.isDisposed){
             compositeDisposable.dispose()
         }
         super.onCleared()

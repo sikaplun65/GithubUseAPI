@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModel()
 
-    private lateinit var adapter: GitHubUserAdapter
+    private val adapter by lazy { GitHubUserAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initAdapter() {
-        adapter = GitHubUserAdapter()
         adapter.notifyDataSetChanged()
 
         adapter.setOnItemClickCallback(object : GitHubUserAdapter.OnItemClickCallback{

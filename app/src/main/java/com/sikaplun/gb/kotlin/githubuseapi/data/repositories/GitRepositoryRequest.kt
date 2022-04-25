@@ -15,7 +15,6 @@ class GitRepositoryRequest(private val apiGitHub: ApiGitHub) {
     private val listUsers = BehaviorSubject.create<ArrayList<User>>()
 
     fun findUsers(query: String) {
-
         apiGitHub.getSearchUsersRF(query)
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(

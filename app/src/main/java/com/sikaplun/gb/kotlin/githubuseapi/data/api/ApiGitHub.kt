@@ -1,7 +1,7 @@
 package com.sikaplun.gb.kotlin.githubuseapi.data.api
 
-import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserResponse
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserRepository
+import com.sikaplun.gb.kotlin.githubuseapi.data.model.DetailUserResponse
 import com.sikaplun.gb.kotlin.githubuseapi.data.model.UserResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Call

@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private val adapter by lazy { GitHubUserAdapter() }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
